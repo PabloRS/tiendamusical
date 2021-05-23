@@ -7,12 +7,17 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.dev.tiendamusicalentities.dto.ArtistaAlbumDTO;
 import com.dev.tiendamusicalservices.service.HomeService;
 
 @ManagedBean
 @ViewScoped
 public class HomeController {
+	
+	private static final Logger LOGGER = LogManager.getLogger(HomeController.class);
 
 	private String filtro;
 	
@@ -23,7 +28,11 @@ public class HomeController {
 	
 	@PostConstruct
 	public void init() {
-		System.out.println("Inicializando home");
+		LOGGER.info("INFO");
+		LOGGER.warn("WARN");
+		LOGGER.error("ERROR");
+		LOGGER.fatal("FATAL");
+		
 	}
 	
 	public void consultarAlbumsArtistasPorFiltro() {
@@ -31,7 +40,7 @@ public class HomeController {
 		
 		if(this.artistasAlbumDTO != null) {
 			this.artistasAlbumDTO.forEach(artistaAlbum -> {
-				System.out.println("Artista: " + artistaAlbum.getArtista().getNombre());
+				LOGGER.info("Artista: " + artistaAlbum.getArtista().getNombre());
 			});
 		}
 	}
