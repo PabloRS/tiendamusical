@@ -1,13 +1,18 @@
 package com.dev.tiendamusicalweb.controllers;
 
+import java.io.IOException;
+
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
+import org.primefaces.model.file.CommonsUploadedFile;
+
 import com.dev.tiendamusicalentities.entities.Persona;
 import com.dev.tiendamusicalservices.service.LoginService;
+import com.dev.tiendamusicalweb.session.SessionBean;
 import com.dev.tiendamusicalweb.utils.CommonUtils;
 
 @ManagedBean
@@ -20,6 +25,9 @@ public class LoginController {
 	
 	@ManagedProperty("#{loginServiceImpl}")
 	private LoginService loginServiceImpl;
+	
+	@ManagedProperty("#{sessionBean}")
+	private SessionBean sessionBean;
 	
 	public LoginService getLoginServiceImpl() {
 		return loginServiceImpl;
@@ -37,7 +45,13 @@ public class LoginController {
 	public void entrar() {
 		Persona persona = this.loginServiceImpl.consultarUsuarioLogin(this.usuario, this.password);
 		if(persona != null) {
-			CommonUtils.mostrarMensaje(FacesMessage.SEVERITY_INFO, "Exitoso", "Bienvenido al home");
+			try {
+				this.sessionBean.setPersona(persona);
+				CommonUtils.redireccionar("/pages/commons/dashboard.xhtml");
+			} catch (IOException e) {
+				e.printStackTrace();
+				CommonUtils.mostrarMensaje(FacesMessage.SEVERITY_FATAL, "Error", "Formato incorrecto");
+			}
 		} else {
 			CommonUtils.mostrarMensaje(FacesMessage.SEVERITY_ERROR, "Error", "Usuario y/o contraseña incorrecto");
 		}
@@ -57,6 +71,14 @@ public class LoginController {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public SessionBean getSessionBean() {
+		return sessionBean;
+	}
+
+	public void setSessionBean(SessionBean sessionBean) {
+		this.sessionBean = sessionBean;
 	}
 	
 	
