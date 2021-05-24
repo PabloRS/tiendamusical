@@ -1,8 +1,10 @@
 package com.dev.tiendamusicalweb.controllers;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
@@ -12,6 +14,8 @@ import org.apache.logging.log4j.Logger;
 
 import com.dev.tiendamusicalentities.dto.ArtistaAlbumDTO;
 import com.dev.tiendamusicalservices.service.HomeService;
+import com.dev.tiendamusicalweb.session.SessionBean;
+import com.dev.tiendamusicalweb.utils.CommonUtils;
 
 @ManagedBean
 @ViewScoped
@@ -25,6 +29,9 @@ public class HomeController {
 	
 	@ManagedProperty("#{homeServiceImpl}")
 	private HomeService homeServiceImpl;
+	
+	@ManagedProperty("#{sessionBean}")
+	private SessionBean sessionBean;
 	
 	@PostConstruct
 	public void init() {
@@ -42,6 +49,16 @@ public class HomeController {
 			this.artistasAlbumDTO.forEach(artistaAlbum -> {
 				LOGGER.info("Artista: " + artistaAlbum.getArtista().getNombre());
 			});
+		}
+	}
+	
+	public void verDetalleAlbum(ArtistaAlbumDTO artistaAlbumDTO) {
+		this.sessionBean.setArtistaAlbumDTO(artistaAlbumDTO);
+		try {
+			CommonUtils.redireccionar("/pages/cliente/detalle.xhtml");
+		} catch (IOException e) {
+			e.printStackTrace();
+			CommonUtils.mostrarMensaje(FacesMessage.SEVERITY_ERROR, "Error", "Error al redireccional al detalle del cliente");
 		}
 	}
 
@@ -67,6 +84,14 @@ public class HomeController {
 
 	public void setHomeServiceImpl(HomeService homeServiceImpl) {
 		this.homeServiceImpl = homeServiceImpl;
+	}
+
+	public SessionBean getSessionBean() {
+		return sessionBean;
+	}
+
+	public void setSessionBean(SessionBean sessionBean) {
+		this.sessionBean = sessionBean;
 	}
 	
 	

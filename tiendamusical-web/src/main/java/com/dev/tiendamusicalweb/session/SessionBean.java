@@ -4,6 +4,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
+import com.dev.tiendamusicalentities.dto.ArtistaAlbumDTO;
 import com.dev.tiendamusicalentities.entities.Persona;
 
 @ManagedBean
@@ -11,6 +12,7 @@ import com.dev.tiendamusicalentities.entities.Persona;
 public class SessionBean {
 
 	private Persona persona;
+	private ArtistaAlbumDTO artistaAlbumDTO;
 	
 	@PostConstruct
 	public void init() {
@@ -23,6 +25,14 @@ public class SessionBean {
 
 	public void setPersona(Persona persona) {
 		this.persona = persona;
+	}
+
+	public ArtistaAlbumDTO getArtistaAlbumDTO() {
+		return artistaAlbumDTO;
+	}
+
+	public void setArtistaAlbumDTO(ArtistaAlbumDTO artistaAlbumDTO) {
+		this.artistaAlbumDTO = artistaAlbumDTO;
 	}
 	
 	
