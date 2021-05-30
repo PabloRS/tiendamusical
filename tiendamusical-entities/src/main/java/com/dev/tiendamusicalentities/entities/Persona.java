@@ -8,6 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -48,6 +49,9 @@ public class Persona extends Common{
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "idRol")
 	private Rol rol;
+	
+	@OneToOne(mappedBy = "persona")
+	private Carrito carrito;
 
 	public Long getIdPersona() {
 		return idPersona;
@@ -127,6 +131,14 @@ public class Persona extends Common{
 
 	public void setRol(Rol rol) {
 		this.rol = rol;
+	}
+
+	public Carrito getCarrito() {
+		return carrito;
+	}
+
+	public void setCarrito(Carrito carrito) {
+		this.carrito = carrito;
 	}
 	
 	
